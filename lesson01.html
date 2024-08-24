@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gamedev Phaser Workshop - lesson 01: Initialize the framework</title>
+    <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    </style>
+    <script src="js/phaser.min.js"></script>
+  </head>
+  <body>
+    <script>
+    // TODO: See the details of Phaser.Scene
+    class Example extends Phaser.Scene {
+      preload () {}
+      create () {}
+    }
+
+    // TODO: See the details of the configuration object
+    const config = {
+      type: Phaser.AUTO,
+      width: 480,
+      height: 320,
+      scene: Example,
+      physics: {
+        default: 'arcade',
+        arcade: {
+          gravity: { y: 200 }
+        }
+      }
+    };
+
+    const game = new Phaser.Game(config);
+    </script>
+  </body>
+</html>
