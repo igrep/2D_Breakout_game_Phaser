@@ -15,15 +15,6 @@
     <script>
     class Example extends Phaser.Scene {
       preload () {
-        // TODO: SHOW_ALL is no more available.
-        // See https://newdocs.phaser.io/docs/3.85.2/Phaser.Scale.ScaleModes
-        game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        game.scale.pageAlignHorizontally = true;
-        game.scale.pageAlignVertically = true;
-
-        // TODO: game.stage is no more available.
-        // See https://newdocs.phaser.io/docs/3.85.2/Phaser.Game
-        game.stage.backgroundColor = "#eee";
       }
       create () {}
     }
@@ -33,6 +24,11 @@
       width: 480,
       height: 320,
       scene: Example,
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+      },
+      backgroundColor: "#eee",
     };
 
     const game = new Phaser.Game(config);
