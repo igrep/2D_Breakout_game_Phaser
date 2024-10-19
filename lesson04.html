@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Gamedev Phaser Workshop - lesson 04: Move the ball</title>
+    <style>
+    * {
+      padding: 0;
+      margin: 0;
+    }
+    </style>
+    <script src="js/phaser.min.js"></script>
+  </head>
+  <body>
+    <script>
+    class Example extends Phaser.Scene {
+      ball;
+
+      preload () {
+        // TODO: Show the reader has to launch a local server
+        this.load.image('ball', 'img/ball.png');
+      }
+      create () {
+        this.ball = this.add.sprite(50, 50, 'ball');
+      }
+      update () {
+        this.ball.x += 1;
+        this.ball.y += 1;
+      }
+    }
+
+    const config = {
+      type: Phaser.CANVAS,
+      width: 480,
+      height: 320,
+      scene: Example,
+      scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+      },
+      backgroundColor: "#eee",
+    };
+
+    const game = new Phaser.Game(config);
+    </script>
+  </body>
+</html>
