@@ -8,3 +8,9 @@ Update the example code in https://developer.mozilla.org/en-US/docs/Games/Tutori
 mkdir js
 curl -Lo js/phaser.min.js https://github.com/phaserjs/phaser/releases/download/v3.80.1/phaser.min.js
 ```
+
+In some environment, you have to launch a web server to load the image files. For example:
+
+```bash
+python3 -m http.server
+```
