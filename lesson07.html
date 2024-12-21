@@ -36,6 +36,7 @@
           this.scale.height - 5,
           'paddle',
         );
+        this.paddle.setOrigin(0.5, 1);
         this.physics.add.existing(this.paddle);
         this.paddle.body.setImmovable(true);
       }
