@@ -30,6 +30,7 @@
         this.physics.add.existing(this.ball);
         this.ball.body.setVelocity(150, -150);
         this.ball.body.setCollideWorldBounds(true, 1, 1);
+        this.ball.body.setBounce(1);
 
         this.paddle = this.add.sprite(
           this.scale.width * 0.5,
