@@ -6,5 +6,5 @@ Update the example code in https://developer.mozilla.org/en-US/docs/Games/Tutori
 
 ```bash
 mkdir js
-wget -O js/phaser.min.js https://github.com/phaserjs/phaser/releases/download/v3.80.1/phaser.min.js
+curl -Lo js/phaser.min.js https://github.com/phaserjs/phaser/releases/download/v3.80.1/phaser.min.js
 ```
