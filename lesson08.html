@@ -32,7 +32,6 @@
         this.ball.body.setCollideWorldBounds(true, 1, 1);
         this.ball.body.setBounce(1);
 
-        // this.physics.world.checkCollision.down = false;
         this.ball.body.onWorldBounds = true;
         this.physics.world.addListener('worldbounds', (body, up, down, left, right) => {
           if (down) {
