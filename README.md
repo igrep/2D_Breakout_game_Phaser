@@ -14,7 +14,7 @@ Install the dependencies:
 
 ```bash
 mkdir js
-curl -Lo js/phaser.min.js https://github.com/phaserjs/phaser/releases/download/v3.80.1/phaser.min.js
+curl -Lo js/phaser.min.js https://github.com/phaserjs/phaser/releases/download/v3.88.2/phaser.min.js
 ```
 
 In some environment, you have to launch a web server to load the image files. For example:
