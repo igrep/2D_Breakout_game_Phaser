@@ -203,7 +203,8 @@
           this.livesText.setText(`Lives: ${this.lives}`);
           this.lifeLostText.visible = true;
           this.ball.body.setVelocity(0);
-          this.ball.setPosition(this.scale.width * 0.5, this.scale.height - 25);
+          // TODO: Update all the previous lessons
+          this.ball.body.reset(this.scale.width * 0.5, this.scale.height - 25);
           this.input.once("pointerdown", () => {
             this.lifeLostText.visible = false;
             this.ball.body.setVelocity(150, -150);
