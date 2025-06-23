@@ -201,7 +201,6 @@
         if (this.lives > 0) {
           this.livesText.setText(`Lives: ${this.lives}`);
           this.lifeLostText.visible = true;
-          // TODO: Update all the previous lessons
           this.ball.body.reset(this.scale.width * 0.5, this.scale.height - 25);
           this.input.once("pointerdown", () => {
             this.lifeLostText.visible = false;
