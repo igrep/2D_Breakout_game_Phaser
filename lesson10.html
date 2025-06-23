@@ -87,7 +87,7 @@
             const newBrick = this.add.sprite(brickX, brickY, "brick");
             this.physics.add.existing(newBrick);
             newBrick.body.setImmovable(true);
-            newBrick.setOrigin(0.5, 1);
+            newBrick.setOrigin(0.5, 0.5);
             this.bricks.add(newBrick);
           }
         }
