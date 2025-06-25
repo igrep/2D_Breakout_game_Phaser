@@ -13,222 +13,223 @@
   </head>
   <body>
     <script>
-    class Example extends Phaser.Scene {
-      ball;
-      paddle;
-      bricks;
+    let ball;
+    let paddle;
+    let bricks;
+    let scoreText;
+    let score = 0;
+    let lives = 3;
+    let livesText;
+    let lifeLostText;
+    let playing = false;
+    let startButton;
 
-      scoreText;
-      score = 0;
-
-      lives = 3;
-      livesText;
-      lifeLostText;
-
-      playing = false;
-      startButton;
-
-      preload () {
-        this.load.image('ball', 'img/ball.png');
-        this.load.image('paddle', 'img/paddle.png');
-        this.load.image('brick', 'img/brick.png');
-        this.load.spritesheet('wobble', 'img/wobble.png', {
-          frameWidth: 20,
-          frameHeight: 20,
-        });
-        this.load.spritesheet("button", "img/button.png", {
-          frameWidth: 120,
-          frameHeight: 40,
-        });
+    const config = {
+      type: Phaser.AUTO,
+      width: 800,
+      height: 600,
+      scene: {
+        preload: preload,
+        create: create,
+        update: update
+      },
+      physics: {
+        default: 'arcade',
       }
-      create () {
-        this.ball = this.add.sprite(
-          this.scale.width * 0.5,
-          this.scale.height - 25,
-          'ball',
-        );
-        this.physics.add.existing(this.ball);
-        this.ball.body.setCollideWorldBounds(true, 1, 1);
-        this.ball.body.setBounce(1);
-        this.ball.anims.create({
-          key: 'wobble',
-          frameRate: 24,
-          frames: this.anims.generateFrameNumbers('wobble', {
-            frames: [0, 1, 0, 2, 0, 1, 0, 2, 0],
-          }),
-        });
+    };
 
-        this.paddle = this.add.sprite(
-          this.scale.width * 0.5,
-          this.scale.height - 5,
-          'paddle',
-        );
-        this.paddle.setOrigin(0.5, 1);
-        this.physics.add.existing(this.paddle);
-        this.paddle.body.setImmovable(true);
+    const game = new Phaser.Game(config);
 
-        this.physics.world.checkCollision.down = false;
-        this.ball.body.onWorldBounds = true;
+    function preload () {
+      game.scene.scenes[0].load.image('ball', 'img/ball.png');
+      game.scene.scenes[0].load.image('paddle', 'img/paddle.png');
+      game.scene.scenes[0].load.image('brick', 'img/brick.png');
+      game.scene.scenes[0].load.spritesheet('wobble', 'img/wobble.png', {
+        frameWidth: 20,
+        frameHeight: 20,
+      });
+      game.scene.scenes[0].load.spritesheet("button", "img/button.png", {
+        frameWidth: 120,
+        frameHeight: 40,
+      });
+    }
 
-        this.initBricks();
+    function create () {
+      const scene = game.scene.scenes[0];
+      ball = scene.add.sprite(
+        scene.scale.width * 0.5,
+        scene.scale.height - 25,
+        'ball',
+      );
+      scene.physics.add.existing(ball);
+      ball.body.setCollideWorldBounds(true, 1, 1);
+      ball.body.setBounce(1);
+      ball.anims.create({
+        key: 'wobble',
+        frameRate: 24,
+        frames: scene.anims.generateFrameNumbers('wobble', {
+          frames: [0, 1, 0, 2, 0, 1, 0, 2, 0],
+        }),
+      });
 
-        const textStyle = { font: "18px Arial", fill: "#0095DD" };
-        this.scoreText = this.add.text(5, 5, "Points: 0", textStyle);
+      paddle = scene.add.sprite(
+        scene.scale.width * 0.5,
+        scene.scale.height - 5,
+        'paddle',
+      );
+      paddle.setOrigin(0.5, 1);
+      scene.physics.add.existing(paddle);
+      paddle.body.setImmovable(true);
 
-        this.livesText = this.add.text(
-          this.scale.width - 5,
-          5,
-          `Lives: ${this.lives}`,
-          textStyle
-        );
-        this.livesText.setOrigin(1, 0);
-        this.lifeLostText = this.add.text(
-          this.scale.width * 0.5,
-          this.scale.height * 0.5,
-          "Life lost, click to continue",
-          textStyle,
-        );
-        this.lifeLostText.setOrigin(0.5, 0.5);
-        this.lifeLostText.visible = false;
+      scene.physics.world.checkCollision.down = false;
+      ball.body.onWorldBounds = true;
 
-        const BUTTON_FRAME_POINTEROUT = 0;
-        const BUTTON_FRAME_POINTEROVER = 1;
-        const BUTTON_FRAME_POINTERDOWN = 2;
-        this.startButton = this.add.sprite(
-          this.scale.width * 0.5,
-          this.scale.height * 0.5,
-          "button",
-          BUTTON_FRAME_POINTEROUT
-        );
-        this.startButton.setInteractive();
-        this.startButton.on("pointerover", () => {
-          this.startButton.setFrame(BUTTON_FRAME_POINTEROVER);
-        }, this);
-        this.startButton.on("pointerdown", () => {
-          this.startButton.setFrame(BUTTON_FRAME_POINTERDOWN);
-        }, this);
-        this.startButton.on("pointerout", () => {
-          this.startButton.setFrame(BUTTON_FRAME_POINTEROUT);
-        }, this);
-        this.startButton.on("pointerup", () => {
-          this.startGame();
-        }, this);
-      }
-      update () {
-        this.physics.collide(this.ball, this.paddle, this.hitPaddle.bind(this));
-        this.physics.collide(this.ball, this.bricks, this.hitBrick.bind(this));
+      initBricks();
 
-        if (this.playing) {
-          this.paddle.x = this.input.x || this.scale.width * 0.5;
-        }
+      const textStyle = { font: "18px Arial", fill: "#0095DD" };
+      scoreText = scene.add.text(5, 5, "Points: 0", textStyle);
 
-        const ballIsOutOfBounds =
-          !Phaser.Geom.Rectangle.Overlaps(this.physics.world.bounds, this.ball.getBounds());
-        if (ballIsOutOfBounds) {
-          this.ballLeaveScreen();
-        }
-      }
+      livesText = scene.add.text(
+        scene.scale.width - 5,
+        5,
+        `Lives: ${lives}`,
+        textStyle
+      );
+      livesText.setOrigin(1, 0);
+      lifeLostText = scene.add.text(
+        scene.scale.width * 0.5,
+        scene.scale.height * 0.5,
+        "Life lost, click to continue",
+        textStyle,
+      );
+      lifeLostText.setOrigin(0.5, 0.5);
+      lifeLostText.visible = false;
 
-      startGame () {
-        this.startButton.destroy();
-        this.ball.body.setVelocity(150, -150);
-        this.playing = true;
-      }
+      const BUTTON_FRAME_POINTEROUT = 0;
+      const BUTTON_FRAME_POINTEROVER = 1;
+      const BUTTON_FRAME_POINTERDOWN = 2;
+      startButton = scene.add.sprite(
+        scene.scale.width * 0.5,
+        scene.scale.height * 0.5,
+        "button",
+        BUTTON_FRAME_POINTEROUT
+      );
+      startButton.setInteractive();
+      startButton.on("pointerover", () => {
+        startButton.setFrame(BUTTON_FRAME_POINTEROVER);
+      });
+      startButton.on("pointerdown", () => {
+        startButton.setFrame(BUTTON_FRAME_POINTERDOWN);
+      });
+      startButton.on("pointerout", () => {
+        startButton.setFrame(BUTTON_FRAME_POINTEROUT);
+      });
+      startButton.on("pointerup", () => {
+        startGame();
+      });
+    }
 
-      initBricks () {
-        const bricksLayout = {
-          width: 50,
-          height: 20,
-          count: {
-            row: 3,
-            col: 7,
-          },
-          offset: {
-            top: 50,
-            left: 60,
-          },
-          padding: 10,
-        };
+    function update () {
+      const scene = game.scene.scenes[0];
+      scene.physics.collide(ball, paddle, hitPaddle);
+      scene.physics.collide(ball, bricks, hitBrick);
 
-        this.bricks = this.add.group();
-        for (let c = 0; c < bricksLayout.count.col; c++) {
-          for (let r = 0; r < bricksLayout.count.row; r++) {
-            const brickX =
-              c * (bricksLayout.width + bricksLayout.padding) + bricksLayout.offset.left;
-            const brickY =
-              r * (bricksLayout.height + bricksLayout.padding) + bricksLayout.offset.top;
-
-            const newBrick = this.add.sprite(brickX, brickY, "brick");
-            this.physics.add.existing(newBrick);
-            newBrick.body.setImmovable(true);
-            newBrick.setOrigin(0.5, 0.5);
-            this.bricks.add(newBrick);
-          }
-        }
+      if (playing) {
+        paddle.x = scene.input.x || scene.scale.width * 0.5;
       }
 
-      hitPaddle (ball, paddle) {
-        this.ball.anims.play('wobble');
-        ball.body.velocity.x = -5 * (paddle.x - ball.x);
+      const ballIsOutOfBounds =
+        !Phaser.Geom.Rectangle.Overlaps(scene.physics.world.bounds, ball.getBounds());
+      if (ballIsOutOfBounds) {
+        ballLeaveScreen();
       }
+    }
 
-      hitBrick (ball, brick) {
-        const destroyTween = this.tweens.add({
-          targets: brick,
-          ease: 'Linear',
-          repeat: 0,
-          duration: 200,
-          props: {
-            scaleX: 0,
-            scaleY: 0,
-          },
-          onComplete: () => {
-            brick.destroy();
-          },
-        });
-        destroyTween.play();
-        this.score += 10;
-        this.scoreText.setText(`Points: ${this.score}`);
+    function startGame () {
+      startButton.destroy();
+      ball.body.setVelocity(150, -150);
+      playing = true;
+    }
 
-        if (this.bricks.countActive() === 0) {
-          alert("You won the game, congratulations!");
-          location.reload();
-        }
-      }
+    function initBricks () {
+      const scene = game.scene.scenes[0];
+      const bricksLayout = {
+        width: 50,
+        height: 20,
+        count: {
+          row: 3,
+          col: 7,
+        },
+        offset: {
+          top: 50,
+          left: 60,
+        },
+        padding: 10,
+      };
 
-      ballLeaveScreen () {
-        this.lives--;
-        if (this.lives > 0) {
-          this.livesText.setText(`Lives: ${this.lives}`);
-          this.lifeLostText.visible = true;
-          this.ball.body.reset(this.scale.width * 0.5, this.scale.height - 25);
-          this.input.once("pointerdown", () => {
-            this.lifeLostText.visible = false;
-            this.ball.body.setVelocity(150, -150);
-          }, this);
-        } else {
-          alert("Game over!");
-          location.reload();
+      bricks = scene.add.group();
+      for (let c = 0; c < bricksLayout.count.col; c++) {
+        for (let r = 0; r < bricksLayout.count.row; r++) {
+          const brickX =
+            c * (bricksLayout.width + bricksLayout.padding) + bricksLayout.offset.left;
+          const brickY =
+            r * (bricksLayout.height + bricksLayout.padding) + bricksLayout.offset.top;
+
+          const newBrick = scene.add.sprite(brickX, brickY, "brick");
+          scene.physics.add.existing(newBrick);
+          newBrick.body.setImmovable(true);
+          newBrick.setOrigin(0.5, 0.5);
+          bricks.add(newBrick);
         }
       }
     }
 
-    const config = {
-      type: Phaser.CANVAS,
-      width: 480,
-      height: 320,
-      scene: Example,
-      scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-      },
-      backgroundColor: "#eee",
-      physics: {
-        default: 'arcade',
-      },
-    };
+    function hitPaddle (ball, paddle) {
+      ball.anims.play('wobble');
+      ball.body.velocity.x = -5 * (paddle.x - ball.x);
+    }
 
-    const game = new Phaser.Game(config);
+    function hitBrick (ball, brick) {
+      const scene = game.scene.scenes[0];
+      const destroyTween = scene.tweens.add({
+        targets: brick,
+        ease: 'Linear',
+        repeat: 0,
+        duration: 200,
+        props: {
+          scaleX: 0,
+          scaleY: 0,
+        },
+        onComplete: () => {
+          brick.destroy();
+        },
+      });
+      destroyTween.play();
+      score += 10;
+      scoreText.setText(`Points: ${score}`);
+
+      if (bricks.countActive() === 0) {
+        alert("You won the game, congratulations!");
+        location.reload();
+      }
+    }
+
+    function ballLeaveScreen () {
+      const scene = game.scene.scenes[0];
+      lives--;
+      if (lives > 0) {
+        livesText.setText(`Lives: ${lives}`);
+        lifeLostText.visible = true;
+        ball.body.reset(scene.scale.width * 0.5, scene.scale.height - 25);
+        scene.input.once("pointerdown", () => {
+          lifeLostText.visible = false;
+          ball.body.setVelocity(150, -150);
+        });
+      } else {
+        alert("Game over!");
+        location.reload();
+      }
+    }
     </script>
   </body>
 </html>
