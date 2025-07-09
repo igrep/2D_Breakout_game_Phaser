@@ -1,7 +1,3 @@
-# TODO: Improve the architecture of the game
-
-Separate the game state and the game logic.
-
 # TODO: Upgrade Phaser and Test
 
 # 2D_Breakout_game_Phaser
