@@ -42,7 +42,6 @@
         this.paddle.body.setImmovable(true);
 
         this.physics.world.checkCollision.down = false;
-        this.ball.body.onWorldBounds = true;
       }
       update () {
         this.physics.collide(this.ball, this.paddle);
