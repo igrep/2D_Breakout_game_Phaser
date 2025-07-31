@@ -91,24 +91,21 @@
         this.lifeLostText.setOrigin(0.5, 0.5);
         this.lifeLostText.visible = false;
 
-        const BUTTON_FRAME_POINTEROUT = 0;
-        const BUTTON_FRAME_POINTEROVER = 1;
-        const BUTTON_FRAME_POINTERDOWN = 2;
         this.startButton = this.add.sprite(
           this.scale.width * 0.5,
           this.scale.height * 0.5,
           "button",
-          BUTTON_FRAME_POINTEROUT
+          0
         );
         this.startButton.setInteractive();
         this.startButton.on("pointerover", () => {
-          this.startButton.setFrame(BUTTON_FRAME_POINTEROVER);
+          this.startButton.setFrame(1);
         }, this);
         this.startButton.on("pointerdown", () => {
-          this.startButton.setFrame(BUTTON_FRAME_POINTERDOWN);
+          this.startButton.setFrame(2);
         }, this);
         this.startButton.on("pointerout", () => {
-          this.startButton.setFrame(BUTTON_FRAME_POINTEROUT);
+          this.startButton.setFrame(0);
         }, this);
         this.startButton.on("pointerup", () => {
           this.startGame();
