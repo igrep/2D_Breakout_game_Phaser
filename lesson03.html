@@ -2,42 +2,45 @@
 <html lang="en-US">
   <head>
     <meta charset="utf-8" />
-    <title>Gamedev Phaser Workshop - lesson 03: Load the assets and print them on screen</title>
+    <title>
+      Gamedev Phaser Workshop - lesson 03: Load the assets and print them on
+      screen
+    </title>
     <style>
-    * {
-      padding: 0;
-      margin: 0;
-    }
+      * {
+        padding: 0;
+        margin: 0;
+      }
     </style>
     <script src="js/phaser.min.js"></script>
   </head>
   <body>
     <script>
-    class Example extends Phaser.Scene {
-      ball;
+      class Example extends Phaser.Scene {
+        ball;
 
-      preload () {
-        this.load.image('ball', 'img/ball.png');
+        preload() {
+          this.load.image("ball", "img/ball.png");
+        }
+        create() {
+          this.ball = this.add.sprite(50, 50, "ball");
+        }
+        update() {}
       }
-      create () {
-        this.ball = this.add.sprite(50, 50, 'ball');
-      }
-      update () {}
-    }
 
-    const config = {
-      type: Phaser.CANVAS,
-      width: 480,
-      height: 320,
-      scene: Example,
-      scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-      },
-      backgroundColor: "#eee",
-    };
+      const config = {
+        type: Phaser.CANVAS,
+        width: 480,
+        height: 320,
+        scene: Example,
+        scale: {
+          mode: Phaser.Scale.FIT,
+          autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
+        backgroundColor: "#eee",
+      };
 
-    const game = new Phaser.Game(config);
+      const game = new Phaser.Game(config);
     </script>
   </body>
 </html>

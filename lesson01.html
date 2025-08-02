@@ -4,29 +4,29 @@
     <meta charset="utf-8" />
     <title>Gamedev Phaser Workshop - lesson 01: Initialize the framework</title>
     <style>
-    * {
-      padding: 0;
-      margin: 0;
-    }
+      * {
+        padding: 0;
+        margin: 0;
+      }
     </style>
     <script src="js/phaser.min.js"></script>
   </head>
   <body>
     <script>
-    class Example extends Phaser.Scene {
-      preload () {}
-      create () {}
-      update () {}
-    }
+      class Example extends Phaser.Scene {
+        preload() {}
+        create() {}
+        update() {}
+      }
 
-    const config = {
-      type: Phaser.CANVAS,
-      width: 480,
-      height: 320,
-      scene: Example,
-    };
+      const config = {
+        type: Phaser.CANVAS,
+        width: 480,
+        height: 320,
+        scene: Example,
+      };
 
-    const game = new Phaser.Game(config);
+      const game = new Phaser.Game(config);
     </script>
   </body>
 </html>

@@ -4,47 +4,46 @@
     <meta charset="utf-8" />
     <title>Gamedev Phaser Workshop - lesson 06: Bounce off the walls</title>
     <style>
-    * {
-      padding: 0;
-      margin: 0;
-    }
+      * {
+        padding: 0;
+        margin: 0;
+      }
     </style>
     <script src="js/phaser.min.js"></script>
   </head>
   <body>
     <script>
-    class Example extends Phaser.Scene {
-      ball;
+      class Example extends Phaser.Scene {
+        ball;
 
-      preload () {
-        this.load.image('ball', 'img/ball.png');
+        preload() {
+          this.load.image("ball", "img/ball.png");
+        }
+        create() {
+          this.ball = this.add.sprite(50, 50, "ball");
+          this.physics.add.existing(this.ball);
+          this.ball.body.setVelocity(150, 150);
+          this.ball.body.setCollideWorldBounds(true, 1, 1);
+        }
+        update() {}
       }
-      create () {
-        this.ball = this.add.sprite(50, 50, 'ball');
-        this.physics.add.existing(this.ball);
-        this.ball.body.setVelocity(150, 150);
-        this.ball.body.setCollideWorldBounds(true, 1, 1);
-      }
-      update () {
-      }
-    }
 
-    const config = {
-      type: Phaser.CANVAS,
-      width: 480,
-      height: 320,
-      scene: Example,
-      scale: {
-        mode: Phaser.Scale.FIT,
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-      },
-      backgroundColor: "#eee",
-      physics: {
-        default: 'arcade',
-      },
-    };
+      const config = {
+        type: Phaser.CANVAS,
+        width: 480,
+        height: 320,
+        scene: Example,
+        scale: {
+          mode: Phaser.Scale.FIT,
+          autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
+        backgroundColor: "#eee",
+        physics: {
+          default: "arcade",
+        },
+      };
 
-    const game = new Phaser.Game(config);
+      const game = new Phaser.Game(config);
     </script>
   </body>
 </html>
